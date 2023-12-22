@@ -12,3 +12,10 @@ export const nick = (novoDado) => {
         payload: novoDado,
       };
     };
+    export const imagem = (novoDado) => {
+      console.log(novoDado)
+        return {
+          type: 'IMAGE',
+          payload: novoDado,
+        };
+      };

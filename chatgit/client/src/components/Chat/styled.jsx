@@ -89,3 +89,7 @@ export const MobileStyles = createGlobalStyle`
     }
   }
 `;
+export const ScrollToBottom = styled.div`
+  float: left;
+  clear: both;
+`;
