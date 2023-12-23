@@ -28,21 +28,24 @@ const io = require('socket.io')(server, {
 })
 io.on('connection', socket => {
     console.log(`Usuário ${socket.id} conectou.`);
-socket.on('username', ({name, foto}) => {
+socket.on('username', ({name, foto, ip}) => {
     socket.data.name = name;
     socket.data.foto = foto;
+    console.log(ip);
     io.emit('entrada', {
         text: `O ${socket.data.name} se conectou!`,
         type: 'server',
         hours: hours(),
        });
 });
-socket.on('mensagem', text => {
+socket.on('mensagem', ({ mensagem=null, foto=null}) => {
+    console.log(foto)
   io.emit('receive', {
-   text,
+   text: mensagem,
    autor: socket.id,
    name: socket.data.name,
    foto: socket.data.foto,
+   imagem: foto,
    hours: hours(),
   });
 });
