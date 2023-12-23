@@ -10,6 +10,10 @@ export const PageStyles = createGlobalStyle`
     margin: 0;
   }
 `;
+export const ImageSend = styled.img`
+height: 140px;
+margin-left: 6px;
+`;
 export const Image = styled.img`
 border-radius: 50%;
 height: 40px;
@@ -18,6 +22,10 @@ margin-left: 6px;
 export const Container = styled.div`
   .server {
     color: red;
+  }
+
+  #imageInput {
+    display: none;
   }
 `;
 export const Perfil = styled.div`
@@ -36,7 +44,23 @@ export const Nick = styled.p`
   font-weight: bold;
   margin-left: 10px;
 `;
-
+export const Span = styled.p`
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 5px;
+margin-bottom: 2px;
+  width: 148px;
+  height: 25px;
+  font-weight: bold;
+  font-family: sans-serif;
+  border-radius: 5px;
+  background-color: grey;
+  border-style: none;
+  &:hover {
+    background: #413b3b;
+  }
+`;
 export const Paragrafo = styled.p`
   color: white;
   font-family: sans-serif;
@@ -54,7 +78,20 @@ export const Embed = styled.div`
   flex-direction: column;
   border: 2px solid grey;
   border-radius: 10px;
-`;
+   &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #101011;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #3503a8;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #230b5c; 
+  }
+ `;
 
 export const Input = styled.input`
   width: 140px;

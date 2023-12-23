@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Container, Button, Paragrafo, Input, Embed, Nick, EmbedSup, PageStyles, Image, Perfil, MobileStyles } from './styled';
+import { Container, Button, Paragrafo, Input, Embed, Nick, EmbedSup, ImageSend, PageStyles, Span, Image, Perfil, MobileStyles } from './styled';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 export default function Chat() {
     const inputRef = useRef();
     const socket = useSelector(state => state.setSocket.socket);
@@ -9,6 +10,7 @@ export default function Chat() {
     const [listMessage, setListMessage] = useState([]);
     const navigate = useNavigate();
     const embedRef = useRef();
+    const fileInputRef= useRef();
     useEffect(() => {
         if (!socket) {
             sessionStorage.removeItem('Nick');
@@ -32,9 +34,9 @@ export default function Chat() {
 
         if (!message) return;
 
-         socket.emit('mensagem', message);
+         socket.emit('mensagem', { mensagem: message } );
         inputRef.current.value = '';
-        setInterval(() => {
+        setTimeout(() => {
         const endEmbed = embedRef.current;
         endEmbed.scrollTop = endEmbed.scrollHeight;
         }, 100);
@@ -46,6 +48,24 @@ export default function Chat() {
             handleSubmit();
         }
     }
+    function handleFileChange() {
+        const file = fileInputRef.current.files[0];
+        if (!file) {
+          toast.info("Selecione um arquivo.", {
+            position: toast.POSITION.BOTTOM_CENTER
+          });
+          return;
+        }
+      
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const imageData = e.target.result;
+          socket.emit('mensagem', { foto: imageData });
+        };
+      
+        reader.readAsDataURL(file);
+      }
+    
     return (
         <Container>
             <PageStyles />
@@ -60,14 +80,22 @@ export default function Chat() {
                                     <Nick>{message.name} ({message.hours}):</Nick>
                                     </Perfil>
                             ) : null}
+                            {message.imagem ? <ImageSend src={message.imagem} /> : null}
                             {message.type === 'server' ?  <Paragrafo className="server">{message.text} ({message.hours})</Paragrafo> : <Paragrafo>{message.text}</Paragrafo> }
-                
+                            
                         </div>
                     ))}
                       <Input ref={inputRef} onKeyDown={handleKeyDown} placeholder="Enviar mensagem" />
                     <Button onClick={handleSubmit}>Enviar</Button>
+                    <label htmlFor="imageInput">
+                   <Span>Imagem</Span>
+                      </label>
+                         <input type="file" ref={fileInputRef} id="imageInput" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+
+
                 </Embed>
             </EmbedSup>
+            <ToastContainer />
         </Container>
     );
 }
